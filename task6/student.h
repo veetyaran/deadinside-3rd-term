@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #ifndef STUDENT_H
 #define STUDENT_H
-#define LEN	1024
 
 enum class io_status
 {
@@ -16,7 +15,6 @@ enum class io_status
 };
 
 int exitcode(io_status errorstatus);
-int taskNum(const char* argv0);
 
 class student
 {
@@ -94,6 +92,8 @@ public:
 	list2_node() = default;
 	~list2_node() = default;
 	list2_node(const list2_node& x) = delete;
+    list2node* get_next(){return next;}
+    list2node* get_prev(){return prev;}
 friend class list2;
 };
 
@@ -103,7 +103,15 @@ private:
 list2_node * head = nullptr;
 public:
 	list2() = default;
-	~list2(){}
+	~list2()
+    {
+        list2_node *current, *next;
+        for(current = head; current; current = next)
+        {
+            next = current->get_next();
+            delete current;
+        }
+    }
 	list2(const list2& x) = delete;
 	list2(list2&& x) = delete;
 	int read (FILE *fp = stdin, unsigned int max_read = -1);
