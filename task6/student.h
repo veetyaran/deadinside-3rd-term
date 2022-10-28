@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #ifndef STUDENT_H
 #define STUDENT_H
-
+#define LEN	1024
 enum class io_status
 {
 	success,
@@ -82,46 +81,5 @@ class student
 		}
 		int cmp (const student& x) const;
 		io_status init (const char * n, int v);
-};
-class list2_node : public student
-{
-private:
-	list2_node * next = nullptr;
-	list2_node * prev = nullptr;
-public:
-	list2_node() = default;
-	~list2_node() = default;
-	list2_node(const list2_node& x) = delete;
-    list2node* get_next(){return next;}
-    list2node* get_prev(){return prev;}
-friend class list2;
-};
-
-class list2
-{
-private:
-list2_node * head = nullptr;
-public:
-	list2() = default;
-	~list2()
-    {
-        list2_node *current, *next;
-        for(current = head; current; current = next)
-        {
-            next = current->get_next();
-            delete current;
-        }
-    }
-	list2(const list2& x) = delete;
-	list2(list2&& x) = delete;
-	int read (FILE *fp = stdin, unsigned int max_read = -1);
-	void print (unsigned int r = 10, FILE *fp = stdout);
-	unsigned int get_length ();
-	list2_node* rotateR() //правый циклический сдвиг на 1
-	{
-		unsigned int len = get_length();
-		if(len == 0) return head;
-		head 
-	}
 };
 #endif
