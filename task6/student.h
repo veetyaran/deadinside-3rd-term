@@ -117,5 +117,11 @@ public:
 	int read (FILE *fp = stdin, unsigned int max_read = -1);
 	void print (unsigned int r = 10, FILE *fp = stdout);
 	unsigned int get_length ();
+	list2_node* rotateR() //правый циклический сдвиг на 1
+	{
+		unsigned int len = get_length();
+		if(len == 0) return head;
+		head 
+	}
 };
 #endif
