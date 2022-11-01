@@ -9,6 +9,7 @@ public:
 	list_node() = default;
 	~list_node() = default;
 	list_node(const list_node& x) = delete;
+	list_node(list_node&& x);
     list_node* get_next(){return next;}
 friend class list;
 };
@@ -30,8 +31,13 @@ public:
     }
 	list(const list& x) = delete;
 	list(list&& x) = delete;
-	int read (FILE *fp = stdin, unsigned int max_read = -1);
+	io_status read (FILE *fp = stdin, unsigned int max_read = -1);
 	void print (unsigned int r = 10, FILE *fp = stdout);
 	unsigned int get_length ();
+	list_node* get_tail();
+	void popNext(list_node* x);
+	void addNext(list_node* x, list_node* newnode);
+	void pushfront(student&& x);
+	void popfront();
 };
 #endif

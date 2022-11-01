@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #ifndef STUDENT_H
 #define STUDENT_H
+#define LEN 1024
 
 enum class io_status
 {
@@ -44,9 +45,9 @@ class student
 			value = x.value; x.value = 0;
 			return *this;
 		}
-		void print () const
+		void print (FILE * fp = stdout) const
 		{
-			printf ("%s %d\n", name, value);
+			fprintf (fp, "%s %d\n", name, value);
 		}
 		io_status read (FILE * fp);
 		int operator> (const student& x) const
@@ -70,6 +71,7 @@ class student
 			return (cmp (x) <= 0 ? 1 : 0);
 		}
 		void swap(student& x);
+		io_status init (const char * n, int v);
 	private:
 		void erase()
 		{
@@ -81,6 +83,5 @@ class student
 			}
 		}
 		int cmp (const student& x) const;
-		io_status init (const char * n, int v);
 };
 #endif

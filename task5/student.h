@@ -70,6 +70,7 @@ class student
 			return (cmp (x) <= 0 ? 1 : 0);
 		}
 		void swap(student& x);
+		io_status init (const char * n, int v);
 	private:
 		void erase()
 		{
@@ -81,7 +82,6 @@ class student
 			}
 		}
 		int cmp (const student& x) const;
-		io_status init (const char * n, int v);
 };
 
 #endif
