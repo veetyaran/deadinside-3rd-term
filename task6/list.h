@@ -35,9 +35,12 @@ public:
 	void print (unsigned int r = 10, FILE *fp = stdout);
 	unsigned int get_length ();
 	list_node* get_tail();
+	void swap(list& x);
 	void popNext(list_node* x);
 	void addNext(list_node* x, list_node* newnode);
 	void pushfront(student&& x);
 	void popfront();
+	void newHead(list_node* x);
+	void bubbleSort();
 };
 #endif

@@ -23,7 +23,6 @@ io_status list::read (FILE *fp, unsigned int max_read)
         if(!(*p_current))
             return io_status::memory;
         p_current = &((*p_current)->next);
-        printf("read successful\n");
         ++counter;
     }
     return errorstatus;
@@ -48,6 +47,11 @@ unsigned int list::get_length()
         current = current->next;
     }
     return counter;
+}
+
+void list::swap(list& x)
+{
+    std::swap(head, x.head);
 }
 
 list_node* list::get_tail()
@@ -94,4 +98,62 @@ void list::pushfront(student&& x)
     newnode->next = head;
     head = newnode;
     return;
+}
+void list::newHead(list_node* x)
+{
+    if(head == nullptr)
+    {
+        head = x;
+        return;
+    }
+    list_node* tmp = nullptr;
+    tmp = head;
+    head = x;
+    x->next = tmp;
+    return;
+}
+
+void list::bubbleSort()
+{
+    list_node* current = nullptr;
+    unsigned int len = get_length(), i = 0;
+    list_node* tmp = nullptr;
+    list newlist;
+  /*  if(len == 1)
+            return;
+
+        if(len == 2)
+        {
+
+        }*/
+
+    for(len; len != 0; len--)
+    {
+        if(head->next == nullptr)
+        {
+            newlist.newHead(head);
+            head = nullptr;
+            break;
+        }
+        if(*(head) > *(head->next))
+        {
+            tmp = head;//Для головы
+            head = head->next;
+            tmp->next = head->next;
+            head->next = tmp;
+        }
+        for(current = head; current && current->next && current->next->next; current = current->next)
+        {
+            if(*(current->next) > *(current->next->next))
+            {
+                tmp = current->next;//Для всех, кроме головы
+                current->next = current->next->next;
+                tmp->next = current->next->next;
+                current->next->next = tmp;
+            }
+        }
+        newlist.newHead(get_tail());
+        current->next = nullptr;
+    }
+    swap(newlist);
 }
