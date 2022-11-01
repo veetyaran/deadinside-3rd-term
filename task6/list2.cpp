@@ -46,7 +46,7 @@ void list2::print(unsigned int r, FILE* fp)
     unsigned int counter = 0;
     for(current = head ;counter != r && current; current = current->next, ++counter)
     {
-        current->print();
+        current->print(fp);
     }
 }
 unsigned int list2::get_length()
@@ -63,7 +63,7 @@ unsigned int list2::get_length()
 list2_node* list2::jumpTo(unsigned int k)
 {
     list2_node* current = head;
-    for(int i = 0; current && i < k; i++)
+    for(int i = 0; current && i < static_cast<int>(k); i++)
     {
         current = current->next;
     }
@@ -77,15 +77,14 @@ list2_node* list2::shift(int k)
         return head;
 
     list2_node* rupture1, *rupture2, *tail = jumpTo(len - 1);
-    list2_node** p_current = &head;
 
     k = k % len;
     if(k == 0)
         return head;
     if(k > 0)
     {
-        rupture2 = jumpTo(get_length() - static_cast<unsigned int>(k));
-        rupture1 = jumpTo(get_length() - static_cast<unsigned int>(k) - 1);
+        rupture2 = jumpTo(len - 1 - static_cast<unsigned int>(k));
+        rupture1 = jumpTo(len - static_cast<unsigned int>(k) - 2);
     }
     if(k < 0)
     {
@@ -128,9 +127,11 @@ void list2::popOne(list2_node* x)
 }
 void list2::popSqnc(list2_node* start, list2_node* end)
 {
+   // flag = 0;
     list2_node* current = nullptr;
     for(current = start; current != end && current; current = current->next)
     {
+        //flag = 1;
         popOne(current);
     }
     popOne(current);
@@ -142,8 +143,6 @@ void list2::solveProblem2(int k)
     list2_node* current = nullptr, *iterator = nullptr;
     for(int i = len; i > 0; i--)
     {
-        if(i - k > 0)
-        {
             current = jumpTo(i - 1);
             int j = 0;
             if(current->prev == nullptr)
@@ -156,30 +155,178 @@ void list2::solveProblem2(int k)
                     break;
                 }
             }
-        }
     }
     return;
 }
 void list2::solveProblem3(int k)
 {
-    unsigned int len = get_length();
-    list2_node* current = nullptr, *iterator = nullptr;
+    int counter = 0;
+    int len = static_cast<int>(get_length());
+    list2_node* current = head, *iterator = nullptr;
     for(int i = 0; i < len; i++)
     {
-        if(i - k > 0)
-        {
-            current = jumpTo(i);
+            current = jumpTo(i - counter);
             int j = 0;
-            if(current->next == nullptr)
+            if(current == nullptr || current->next == nullptr)
                 break;
-            for(iterator = current->next; iterator && j < k; j++, iterator = iterator->next)
+            for(iterator = current->next; iterator != nullptr && j < k; j++, iterator = iterator->next)
             {
                 if(*current > *iterator)
                 {
                     popOne(current);
+                    ++counter;
                     break;
                 }
             }
+    }
+    return;
+}
+
+void list2::solveProblem5(int k)
+{
+    int sqncFlag = 0;
+    int sqncLen = 0;
+    unsigned int len = get_length();
+    list2_node* current = nullptr, *start = nullptr, *end = nullptr;
+    if(len == 1 && k == 0)
+    {
+        popOne(head);
+        return;
+    }
+    if(len == 1 && k > 0) return;
+    for(current = head; current && current->next; current = current->next)
+    {
+        if(*current == *(current->next) && sqncFlag == 0)
+        {
+            start = current;
+            sqncFlag = 1;
+            sqncLen = 2;
+            continue;
+        }
+        if(*current == *(current->next) && sqncFlag == 1)
+        {
+            sqncLen++;
+            continue;
+        }
+        if(!(*current == *(current->next)) && sqncFlag == 1)
+        {
+            end = current;
+            if(sqncLen > k)
+            {
+                popSqnc(start, end);
+            }
+            sqncFlag = 0;
+            sqncLen = 0;
+            continue;
+        }
+    }
+    if(sqncFlag == 1 && sqncLen > k && current)
+    {
+        popSqnc(start, current);
+    }
+    return;
+}
+void list2::solveProblem6(int k)
+{
+    int sqncFlag = 0;
+    int sqncLen = 0;
+    unsigned int len = get_length();
+    list2_node* current = nullptr, *start = nullptr, *end = nullptr;
+    if(len == 1 && k == 0)
+    {
+        popOne(head);
+        return;
+    }
+    if(len == 1 && k > 0) return;
+    for(current = head; current && current->next; current = current->next)
+    {
+        if(!(*current < *(current->next)) && sqncFlag == 0)
+        {
+            start = current;
+            sqncFlag = 1;
+            sqncLen = 2;
+            continue;
+        }
+        if(!(*current < *(current->next)) && sqncFlag == 1)
+        {
+            sqncLen++;
+            continue;
+        }
+        if((*current < *(current->next)) && sqncFlag == 1)
+        {
+            end = current;
+            if(sqncLen > k)
+            {
+                popSqnc(start, end);
+            }
+            sqncFlag = 0;
+            sqncLen = 0;
+            continue;
+        }
+    }
+    if(sqncFlag == 1 && sqncLen > k && current)
+    {
+        popSqnc(start, current);
+    }
+    return;
+}
+
+void list2::solveProblem7(int k)
+{
+    int fstSqncFlag = 0, sqncFlag = 0;
+    int sqncLen = 0;
+    unsigned int len = get_length();
+    list2_node* current = nullptr, *start = nullptr, *end = nullptr, *possible = nullptr;
+
+    if(len >= 1 && len <=2)
+        return;
+
+    for(current = head; current && current->next; current = current->next)
+    {
+        if(sqncFlag == 0 && (*current == *(current->next)))
+        {
+            sqncFlag = 1;
+            sqncLen = 2; 
+            if(fstSqncFlag == 1)
+            {
+                possible = current;
+            }
+            continue;
+        }
+        if(sqncFlag == 1 && (*current == *(current->next)))
+        {
+            sqncLen++;
+            continue;
+        }
+        if(sqncFlag == 1 && !(*current == *(current->next)))
+        {
+            sqncFlag = 0;
+            if(sqncLen > k)
+            {
+                if(fstSqncFlag == 1)
+                {
+                    end = possible->prev;
+                    if(start != end)
+                    {
+                        popSqnc(start->next, end);
+                    }
+                    start = current;
+                }
+                else
+                {
+                    start = current;
+                    fstSqncFlag = 1;
+                }
+                sqncLen = 0;
+            }
+        }
+
+    }
+    if(sqncFlag == 1 && sqncLen > k && fstSqncFlag == 1 && current)
+    {
+        if(start != possible->prev)
+        {
+            popSqnc(start->next, possible->prev);
         }
     }
     return;

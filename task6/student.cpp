@@ -1,4 +1,7 @@
 #include "student.h"
+
+#include <string.h>
+
 io_status student::read(FILE * fp)
 {
 	char n[LEN];

@@ -14,6 +14,7 @@ enum class io_status
 };
 
 int exitcode(io_status errorstatus);
+int taskNum(const char* argv0);
 
 class student
 {
@@ -43,9 +44,9 @@ class student
 			value = x.value; x.value = 0;
 			return *this;
 		}
-		void print () const
+		void print(FILE* fp = stdout) const
 		{
-			printf ("%s %d\n", name, value);
+			fprintf(fp, "%s %d\n", name, value);
 		}
 		io_status read (FILE * fp);
 		int operator> (const student& x) const
@@ -82,4 +83,5 @@ class student
 		int cmp (const student& x) const;
 		io_status init (const char * n, int v);
 };
+
 #endif
