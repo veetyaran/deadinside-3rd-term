@@ -104,12 +104,25 @@ void list::newHead(list_node* x)
     if(head == nullptr)
     {
         head = x;
+        head->next = nullptr;
         return;
     }
     list_node* tmp = nullptr;
     tmp = head;
     head = x;
     x->next = tmp;
+    return;
+}
+void list::newTail(list_node* tail, list_node* x)
+{
+    if(head == nullptr)
+    {
+        head = x;
+        head->next = nullptr;
+        return;
+    }
+    tail->next = x;
+    x->next = nullptr;
     return;
 }
 
@@ -119,13 +132,6 @@ void list::bubbleSort()
     unsigned int len = get_length(), i = 0;
     list_node* tmp = nullptr;
     list newlist;
-  /*  if(len == 1)
-            return;
-
-        if(len == 2)
-        {
-
-        }*/
 
     for(len; len != 0; len--)
     {
@@ -152,8 +158,66 @@ void list::bubbleSort()
                 current->next->next = tmp;
             }
         }
-        newlist.newHead(get_tail());
-        current->next = nullptr;
+        newlist.newHead(std::exchange(current->next, nullptr));
     }
     swap(newlist);
 }
+
+list_node* list::findPrevOfMin()
+{
+    list_node* current = nullptr, *min = head;
+    for(current = head; current && current->next; current = current->next)
+    {
+        if(*(current->next) < *min)
+        {
+            min = current;
+        }
+    }
+    return min;
+}
+
+void list::selectionSort()
+{
+    list_node* min = nullptr, *current = nullptr, *tail = nullptr;
+    list newlist;
+    unsigned int len = get_length();
+    if(len == 1)
+        return;
+    if(len == 2)
+    {
+        if(*head >= *(head->next))
+            return;
+        else
+        {
+            min = head;
+            head = head->next;
+            min->next = nullptr;
+            head->next = min;
+            return;
+        }
+    }
+    for(; len != 0; len--)
+    {
+        current = findPrevOfMin();
+        if(current == head)
+        {
+            head = head->next;
+            newlist.newTail(tail, current);
+            tail = current;
+        }
+        else
+        {
+            min = current->next;
+            current->next = current->next->next;
+            newlist.newTail(tail, min);
+            tail = min;
+        }
+    }
+    swap(newlist);
+    return;
+}
+
+/*void list::insertionSort()
+{
+
+}*/

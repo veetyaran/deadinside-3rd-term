@@ -41,6 +41,10 @@ public:
 	void pushfront(student&& x);
 	void popfront();
 	void newHead(list_node* x);
+	void newTail(list_node* tail, list_node* x);
 	void bubbleSort();
+	list_node* findPrevOfMin();
+	void selectionSort();
+	void insertionSort();
 };
 #endif
