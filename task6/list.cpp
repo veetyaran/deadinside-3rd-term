@@ -92,11 +92,17 @@ void list::popfront()
     delete buf;
     return;
 }
-void list::pushfront(student&& x)
+void list::pushback(list_node* x)
 {
-    list_node* newnode = new list_node((list_node&&)x);
-    newnode->next = head;
-    head = newnode;
+    if(!head)
+    {
+        head = x;
+        head->next = nullptr;
+        return;
+    }
+    list_node* tail = get_tail();
+    tail->next = x;
+    x->next = nullptr;
     return;
 }
 void list::newHead(list_node* x)
@@ -276,11 +282,23 @@ list_node* list::cut(list_node* x, unsigned int len)
     return res;
 }
 
-/*void list::mergeSort()
+void list::pushSqnc(list_node* x)
+{
+    if(!head)
+    {
+        head = x;
+        return;
+    }
+        list_node* newtail = get_tail();
+        newtail->next = x;
+        return;
+}
+
+void list::mergeSort()
 {
     if(!head || !(head->next))
         return;
-    list_node* currentA = nullptr, * currentB = nullptr;
+    list_node* currentA = nullptr, * currentB = nullptr, * newhead = nullptr;
     list newlist, A, B, C;
     unsigned int sortedLen = 0, thisLen = get_length();
     for(sortedLen = 1; sortedLen < thisLen / 2 + 1; ++sortedLen)
@@ -290,7 +308,35 @@ list_node* list::cut(list_node* x, unsigned int len)
             currentA = head;
             head = cut(currentA, sortedLen);
             currentB = head;
+            if(!currentB)
+                break;
             head = cut(currentB, sortedLen);
+            bool fl1 = true, fl2 = true, enter = false;
+            while(fl1 || fl2)
+            {   
+        print(100000);
+                if(*currentA <= *currentB)
+                {
+                    C.pushback(currentA);
+                    if(!enter)
+                        {newhead = currentA; enter = true;}
+                    if(currentA->next)
+                        currentA = currentA->next;
+                    else{fl1 = false;}
+                }
+                else
+                {
+                    C.pushback(currentB);
+                    if(!enter)
+                        {newhead = currentB; enter = true;}
+                    if(currentB->next)
+                        currentB = currentB->next;
+                    else{fl2 = false;}
+                }
+            }
+            newlist.pushSqnc(newhead);            
         }
+        swap(newlist);
     }
-}*/
+    return;
+}

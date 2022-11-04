@@ -38,11 +38,12 @@ public:
 	void swap(list& x);
 	void popNext(list_node* x);
 	void addNext(list_node* x, list_node* newnode);
-	void pushfront(student&& x);
+	void pushback(list_node* x);
 	void popfront();
 	void newHead(list_node* x);
 	void newTail(list_node* tail, list_node* x);\
 	void insertX(list_node* x);
+	void pushSqnc(list_node* x);
 	list_node* cut(list_node* x, unsigned int len);
 	void bubbleSort();
 	list_node* findPrevOfMin();

@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    FILE* fp = fopen("pyramid.txt", "r");
+    FILE* fp = fopen("test.txt", "r");
     FILE* fp1 = fopen("result.txt", "w");
     double time;
     list l;
@@ -11,7 +11,8 @@ int main(int argc, char** argv)
     time = clock();
     //l.bubbleSort();
     //l.selectionSort();
-    l.insertionSort();
+    //l.insertionSort();
+    l.mergeSort();
     time = (clock() - time) / CLOCKS_PER_SEC;
     fprintf(fp1, "New List\n");
     l.print(100000000, fp1);
