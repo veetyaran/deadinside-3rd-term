@@ -161,6 +161,7 @@ void list::bubbleSort()
         newlist.newHead(std::exchange(current->next, nullptr));
     }
     swap(newlist);
+    return;
 }
 
 list_node* list::findPrevOfMin()
@@ -185,7 +186,7 @@ void list::selectionSort()
         return;
     if(len == 2)
     {
-        if(*head >= *(head->next))
+        if(*head < *(head->next))
             return;
         else
         {
@@ -217,7 +218,79 @@ void list::selectionSort()
     return;
 }
 
-/*void list::insertionSort()
+void list::insertX(list_node* x)
 {
+    list_node* current = nullptr, *tmp = nullptr;
+    if(!head)
+    {
+        head = x;
+        x->next = nullptr;
+        return;
+    }
+    if(*x < *head) //вставка спереди
+    {
+        tmp = head;
+        head = x;
+        head->next = tmp;
+        return;
+    }
+    for(current = head; current && current->next;  current = current->next) //вставка между двумя
+    {
+        if(*x < *(current->next))
+        {
+            x->next = current->next;
+            current->next = x;
+            return;
+        }
+    }
+    current->next = x; //вставка в конец
+    x->next = nullptr;
+    return;
+}
 
+void list::insertionSort()
+{
+    list_node* current = nullptr;
+    list newlist;
+    if(!head || !(head->next))
+        return;
+    while(head)
+    {
+        current = head;
+        head = head->next;
+        newlist.insertX(current);
+    }
+    swap(newlist);
+    return;
+}
+
+list_node* list::cut(list_node* x, unsigned int len)
+{
+    list_node* current = x, *res = nullptr;
+    for(int i = 0; i < len - 1 && current->next; i++)
+    {
+        current = current->next;
+    }
+    res = current->next;
+    current->next = nullptr;
+    return res;
+}
+
+/*void list::mergeSort()
+{
+    if(!head || !(head->next))
+        return;
+    list_node* currentA = nullptr, * currentB = nullptr;
+    list newlist, A, B, C;
+    unsigned int sortedLen = 0, thisLen = get_length();
+    for(sortedLen = 1; sortedLen < thisLen / 2 + 1; ++sortedLen)
+    {
+        while(head)
+        {
+            currentA = head;
+            head = cut(currentA, sortedLen);
+            currentB = head;
+            head = cut(currentB, sortedLen);
+        }
+    }
 }*/
