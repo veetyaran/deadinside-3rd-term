@@ -1,4 +1,5 @@
 # Prerequisites
+*.txt
 *.d
 
 # Compiled Object files
