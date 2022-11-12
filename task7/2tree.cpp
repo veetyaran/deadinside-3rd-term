@@ -1,7 +1,18 @@
 #include "2tree.h"
 
 #include <algorithm>
+#include <boost/pool/pool_alloc.hpp>
 #include <list>
+
+using cool_list = std::list<
+    tree_node*,
+    boost::fast_pool_allocator<
+        tree_node*,
+        boost::default_user_allocator_new_delete,
+        boost::details::pool::null_mutex,
+        20 * sizeof(tree_node*)
+    >
+>;
 
 void tree::addNodeSubtree(tree_node* current, tree_node* x)
 {
@@ -67,7 +78,8 @@ unsigned int tree::countLeafNodes()
     unsigned int leafCounter = 0;
     if(!root)
         return 0;
-    std::list<tree_node*> l;
+
+    cool_list l;
     l.push_front(root);
     while(!l.empty())
     {
@@ -106,7 +118,7 @@ unsigned int tree::countTreeHeight()
     tree_node* current = nullptr;
     if(!root)
         return 0;
-    std::list<tree_node*> l;
+    cool_list l;
     l.push_front(root);
     while(!l.empty())
     {
@@ -133,7 +145,7 @@ unsigned int tree::countSubtreeHeight(tree_node* current)
     tree_node* current1 = current;
     if(!current1)
         return 0;
-    std::list<tree_node*> l;
+    cool_list l;
     l.push_front(current1);
     while(!l.empty())
     {
@@ -159,7 +171,7 @@ unsigned int tree::countMaxLevelSize()
     tree_node* current = nullptr;
     if(!root)
         return 0;
-    std::list<tree_node*> l;
+    cool_list l;
     l.push_front(root);
     while(!l.empty())
     {
@@ -184,7 +196,7 @@ unsigned int tree::countParentsWithOneChild()
     unsigned int counter = 0;
     if(!root)
         return 0;
-    std::list<tree_node*> l;
+    cool_list l;
     l.push_front(root);
     while(!l.empty())
     {
