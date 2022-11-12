@@ -1,6 +1,7 @@
 #include "2tree.h"
-#include "list.h"
+
 #include <algorithm>
+#include <list>
 
 void tree::addNodeSubtree(tree_node* current, tree_node* x)
 {
@@ -66,15 +67,16 @@ unsigned int tree::countLeafNodes()
     unsigned int leafCounter = 0;
     if(!root)
         return 0;
-    list<tree_node*> l;
-    l.push(root);
-    while(!l.isEmpty())
+    std::list<tree_node*> l;
+    l.push_front(root);
+    while(!l.empty())
     {
-        tree_node* current = l.pop();
+        tree_node* current = l.front();
+        l.pop_front();
         if(current->right != nullptr)
-            l.push(current->right);
+            l.push_front(current->right);
         if(current->left != nullptr)
-            l.push(current->left);
+            l.push_front(current->left);
         if(current->left == nullptr && current->right == nullptr)
             ++leafCounter;
     }
@@ -104,19 +106,20 @@ unsigned int tree::countTreeHeight()
     tree_node* current = nullptr;
     if(!root)
         return 0;
-    list<tree_node*> l;
-    l.push(root);
-    while(!l.isEmpty())
+    std::list<tree_node*> l;
+    l.push_front(root);
+    while(!l.empty())
     {
         ++levelCounter;
-        size = l.size;
+        size = l.size();
         while(size != 0)
         {
-            current = l.popback();
+            current = l.back();
+            l.pop_back();
             if(current->left != nullptr)
-                l.push(current->left);
+                l.push_front(current->left);
             if(current->right != nullptr)
-                l.push(current->right);
+                l.push_front(current->right);
             size--;
         }
     }
@@ -130,19 +133,20 @@ unsigned int tree::countSubtreeHeight(tree_node* current)
     tree_node* current1 = current;
     if(!current1)
         return 0;
-    list<tree_node*> l;
-    l.push(current1);
-    while(!l.isEmpty())
+    std::list<tree_node*> l;
+    l.push_front(current1);
+    while(!l.empty())
     {
         ++levelCounter;
-        size = l.size;
+        size = l.size();
         while(size != 0)
         {
-            current1 = l.popback();
+            current1 = l.back();
+            l.pop_back();
             if(current1->left != nullptr)
-                l.push(current1->left);
+                l.push_front(current1->left);
             if(current1->right != nullptr)
-                l.push(current1->right);
+                l.push_front(current1->right);
             size--;
         }
     }
@@ -155,20 +159,21 @@ unsigned int tree::countMaxLevelSize()
     tree_node* current = nullptr;
     if(!root)
         return 0;
-    list<tree_node*> l;
-    l.push(root);
-    while(!l.isEmpty())
+    std::list<tree_node*> l;
+    l.push_front(root);
+    while(!l.empty())
     {
-        size = l.size;
+        size = l.size();
         if(size > maxsize)
             maxsize = size;
         while(size != 0)
         {
-            current = l.popback();
+            current = l.back();
+            l.pop_back();
             if(current->left != nullptr)
-                l.push(current->left);
+                l.push_front(current->left);
             if(current->right != nullptr)
-                l.push(current->right);
+                l.push_front(current->right);
             size--;
         }
     }
@@ -179,15 +184,16 @@ unsigned int tree::countParentsWithOneChild()
     unsigned int counter = 0;
     if(!root)
         return 0;
-    list<tree_node*> l;
-    l.push(root);
-    while(!l.isEmpty())
+    std::list<tree_node*> l;
+    l.push_front(root);
+    while(!l.empty())
     {
-        tree_node* current = l.pop();
+        tree_node* current = l.front();
+        l.pop_front();
         if(current->right != nullptr)
-            l.push(current->right);
+            l.push_front(current->right);
         if(current->left != nullptr)
-            l.push(current->left);
+            l.push_front(current->left);
         if(current->left == nullptr && current->right != nullptr)
             ++counter;
         if(current->left != nullptr && current->right == nullptr)
