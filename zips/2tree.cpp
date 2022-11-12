@@ -195,7 +195,7 @@ unsigned int tree::countParentsWithOneChild()
     }
     return counter;
 }
-
+/*
 unsigned int tree::countSubtreeHeightRecursively(tree_node* current)
 {
     if(!current)
@@ -222,39 +222,22 @@ unsigned int tree::countSubtreeHeightRecursively(tree_node* current)
         }
     }
 }
-unsigned int tree::countLRDiffHere(tree_node* current, unsigned int maxdiff)
+unsigned int tree::countMaxLRDiffSubtreeRecursively(tree_node* current, unsigned int maxdiff)
 {
-    unsigned int  l = 0, r = 0, diff = 0;
+    unsigned int ret = 0,  l = 0, r = 0, diff = 0;
     if(!current)
         return 0;
-    l = countSubtreeHeightRecursively(current->left);
-    r = countSubtreeHeightRecursively(current->right);
+    l = countSubtreeHeight(current->left);
+    r = countSubtreeHeight(current->right);
     auto R = std::minmax(l, r);
     diff = R.second - R.first;
     if(maxdiff < diff)
-        return diff;
+        {ret = diff; return ret;}
     else return maxdiff;
+    
 }
 
-unsigned int tree::countMaxLRDiffRecursively(tree_node* current, unsigned int max)
-{
-    unsigned int diffHere = 0, diffL = 0, diffR = 0, maxdiff = max;
-    if(!current->left && !current->right)
-        return 0;
-    diffHere = countLRDiffHere(current, maxdiff);
-    if(diffHere > maxdiff)
-        maxdiff = diffHere;
-    if(current->left)
-        diffL = countMaxLRDiffRecursively(current->left, maxdiff);
-    if(current->right)
-        diffR = countMaxLRDiffRecursively(current->right, maxdiff);
-    if(diffL > maxdiff && diffL >= diffR)
-        maxdiff = diffL;
-    if(diffR > maxdiff && diffR > diffL)
-        maxdiff = diffR;
-    return maxdiff;
-}
 unsigned int tree::countMaxLRDiff()
 {
-    return countMaxLRDiffRecursively(root);
-}
+    return countMaxLRDiffSubtreeRecursively(root);
+}*/

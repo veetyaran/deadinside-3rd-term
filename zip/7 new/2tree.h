@@ -69,14 +69,15 @@ public:
     unsigned int countLeafNodes();
     unsigned int countLeafNodesRecursively(tree_node* current);
     unsigned int countTreeHeight();
-    unsigned int countSubtreeHeight(tree_node* current);
+    unsigned int countSubtreeHeight(tree_node* current, unsigned int level = 1);
     unsigned int countSubtreeHeightRecursively(tree_node* current);
     unsigned int countMaxLevelSize();
-    unsigned int countLRDiffHere(tree_node* current, unsigned int maxdiff = 0);
-    //unsigned int countMaxLRDiffSubtreeRecursively(tree_node* current, unsigned int maxdiff = 0);
-    unsigned int countMaxLRDiffRecursively(tree_node* current, unsigned int max = 0);
-    unsigned int countParentsWithOneChild();
+    unsigned int* countMaxLevelSizeSubtree(tree_node* current, unsigned int* sizes, unsigned int len, unsigned int i = 0);
+    unsigned int countLRDiffHere(tree_node* current, unsigned int maxsize = 0);
+    unsigned int countMaxLRDiffSubtreeRecursively(tree_node* current, unsigned int max = 0);
     unsigned int countMaxLRDiff();
+    unsigned int countParentsWithOneChild();
+    unsigned int countParentsWithOneChildSubtree(tree_node* current);
 private:
     static void delete_subtree (tree_node * curr)
     {

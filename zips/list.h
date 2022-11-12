@@ -14,14 +14,7 @@ class list
 {
 public:
     list() = default;
-	~list()
-	{
-		list_node<T>* current = nullptr;
-		for(current = head; current; current = current->next)
-		{
-			delete current;
-		}
-	}
+	~list() = default;
 	list_node<T>* head = nullptr;
 	list_node<T>* tail = nullptr;
 	unsigned int size = 0;

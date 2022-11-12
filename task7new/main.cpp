@@ -1,4 +1,3 @@
-#define private public
 #include "2tree.h"
 #include "stdio.h"
 #include <time.h>
@@ -45,6 +44,8 @@ int main(int argc, char** argv)
     t2 = (clock() - t2) / CLOCKS_PER_SEC;
     t3 = clock();
     ret3 = T.countMaxLevelSize();
+    if(ret3 == static_cast<unsigned int>(-1))
+        printf("cannot allocate memory for task3\n");
     t3 = (clock() - t3) / CLOCKS_PER_SEC;
     t4 = clock();
     ret4 = T.countMaxLRDiff();
