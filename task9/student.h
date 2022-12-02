@@ -35,7 +35,7 @@ public:
     student& operator= (student&& x)
     {
         if (this == &x)
-        return *this;
+            return *this;
         erase ();
         name = x.name; x.name = nullptr;
         value = x.value; x.value = 0;

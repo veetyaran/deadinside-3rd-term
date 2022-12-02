@@ -24,7 +24,7 @@ void student::swap(student& x)
 	name = x.name;
 	x.name = n;
 	v = value;
-	value = x.value;
+value = x.value;
 	x.value = v;
 }
 
