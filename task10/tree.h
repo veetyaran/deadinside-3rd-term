@@ -37,7 +37,7 @@ public:
     tree_node& operator= (tree_node&& x)
     {
         if (this == &x)
-        return *this;
+            return *this;
         (T&&) *this = (T&&) x;
         erase_links ();
         x.erase_links ();
