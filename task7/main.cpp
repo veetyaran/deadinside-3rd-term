@@ -3,16 +3,20 @@
 #include "stdio.h"
 #include <time.h>
 
+#define PROFILE(argv0, task, code) \
+{ \
+    double t = clock(); \
+    auto return_value = code; \
+    t = (clock() - t) / CLOCKS_PER_SEC; \
+    printf("%s : Task = %d Result = %d Elapsed = %.2f\n", argv0, task, return_value, t); \
+}
+
 int main(int argc, char** argv)
 {
     int r = 0;
     const char* filename = nullptr;
     FILE* fp = nullptr;
     io_status errorstatus = io_status::success;
-    unsigned int ret1 = 0, ret2 = 0, ret3 = 0, ret5 = 0;
-    unsigned int ret4 = 0;
-    double t4 = 0.;
-    double t1 = 0., t2 = 0., t3 = 0., t5 = 0.;
     if (argc != 3)
         return exitcode(io_status::format);
 
@@ -37,27 +41,12 @@ int main(int argc, char** argv)
     printf("Tree:\n");
     T.print(r);
 
-    t1 = clock();
-    ret1 = T.countLeafNodes();
-    t1 = (clock() - t1) / CLOCKS_PER_SEC;
-    t2 = clock();
-    ret2 = T.countTreeHeight();
-    t2 = (clock() - t2) / CLOCKS_PER_SEC;
-    t3 = clock();
-    ret3 = T.countMaxLevelSize();
-    t3 = (clock() - t3) / CLOCKS_PER_SEC;
-    t4 = clock();
-    ret4 = T.countMaxLRDiff();
-    t4 = (clock() - t4)/CLOCKS_PER_SEC;
-    t5 = clock();
-    ret5 = T.countParentsWithOneChild();
-    t5 = (clock() - t5) / CLOCKS_PER_SEC;
-    
-    printf("%s : Task = 1 Result = %d Elapsed = %.2f\n", argv[0], ret1, t1);
-    printf("%s : Task = 2 Result = %d Elapsed = %.2f\n", argv[0], ret2, t2);
-    printf("%s : Task = 3 Result = %d Elapsed = %.2f\n", argv[0], ret3, t3);
-    printf("%s : Task = 4 Result = %d Elapsed = %.2f\n", argv[0], ret4, t4);
-    printf("%s : Task = 5 Result = %d Elapsed = %.2f\n", argv[0], ret5, t5);
+    PROFILE(argv[0], 1, T.countLeafNodes());
+    PROFILE(argv[0], 2, T.countTreeHeight());
+    PROFILE(argv[0], 3, T.countMaxLevelSize());
+    PROFILE(argv[0], 4, T.countMaxLRDiff());
+    PROFILE(argv[0], 5, T.countParentsWithOneChild());
+
     fclose(fp);
     return 0;
 }
